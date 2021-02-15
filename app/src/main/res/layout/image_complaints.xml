@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="10dp">
+
+    <ImageView
+        android:id="@+id/img12"
+        android:layout_width="105dp"
+        android:layout_height="105dp"
+        android:scaleType="fitXY"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:src="@drawable/home"
+        android:visibility="invisible"
+        android:background="@drawable/layer"
+        />
+
+<ImageView
+    android:id="@+id/imgTick"
+    android:layout_width="62dp"
+    android:layout_height="62dp"
+    android:src="@drawable/right_tick"
+    android:padding="18dp"
+    android:layout_alignRight="@id/img12"
+    android:layout_alignLeft="@id/img12"
+    android:layout_alignBottom="@id/img12"
+    android:layout_alignTop="@id/img12"
+    android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/imgCancel"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:src="@drawable/call"
+        android:layout_marginBottom="85dp"
+        android:layout_marginLeft="85dp"
+        android:layout_alignRight="@id/img12"
+        android:layout_alignLeft="@id/img12"
+        android:layout_alignBottom="@id/img12"
+        android:layout_alignTop="@id/img12"
+        android:visibility="invisible"/>
+
+
+
+
+
+
+
+</RelativeLayout>
