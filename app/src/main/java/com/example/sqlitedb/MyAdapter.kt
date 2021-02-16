@@ -3,19 +3,27 @@ package com.example.sqlitedb
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
-class MyAdapter(val list: ArrayList<EmpModelClass>, val context: Activity) :
+class MyAdapter(val list: ArrayList<EmpModelClass>, val context: MainActivity) :
     RecyclerView.Adapter<MyAdapter.MyHolder>() {
 
+
+    companion object
+    {
+        var img : ImageView? = null
+        lateinit var adapter1:AdapterTOShowImages
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
@@ -42,6 +50,32 @@ class MyAdapter(val list: ArrayList<EmpModelClass>, val context: Activity) :
 
 //holder.recycle.adapter = MyAdapter(list , )
 
+        var messagesList: ArrayList<DataShowImages> = ArrayList()
+        val databaseHandler = DatabaseHandler(context)
+        try {
+            val emp: List<DataShowImages> = databaseHandler.viewImages()
+            if (emp.size != 0) {
+                messagesList.clear()
+                for (e in emp) {
+                    if(e.Images_ID == list[position].userId)
+                    {
+                        messagesList.add(DataShowImages(e.ID,e.Images_ID, e.Images, false))
+                    }
+                }
+
+
+              holder.recycle.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+                adapter1 = AdapterTOShowImages(context, messagesList)
+                holder.recycle.adapter = adapter1
+            }
+
+        } catch (e: Exception) {
+            Toast.makeText(context, "$e", Toast.LENGTH_LONG).show()
+            Log.e("images", e.toString())
+        }
+
+
     }
 
     override fun getItemCount(): Int {
@@ -50,26 +84,15 @@ class MyAdapter(val list: ArrayList<EmpModelClass>, val context: Activity) :
 
 
     class MyHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var messagesList: ArrayList<DataPIckImages> = ArrayList()
         var id = itemView.findViewById<TextView>(R.id.textViewId)
         var name = itemView.findViewById<TextView>(R.id.textViewName)
         var email = itemView.findViewById<TextView>(R.id.textViewEmail)
         var update = itemView.findViewById<TextView>(R.id.btn1)
         var delete = itemView.findViewById<TextView>(R.id.btn2)
-var recycle : RecyclerView = itemView.findViewById(R.id.recycleImg)
-
-
-
+        var recycle: RecyclerView = itemView.findViewById(R.id.recycleImg)
         var x = itemView.context
 
-        init {
-            val context = itemView.context
 
-            recycle?.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
-            recycle.adapter = AdapterTOShowImages(context, messagesList)
-        }
     }
 
 
@@ -120,37 +143,15 @@ var recycle : RecyclerView = itemView.findViewById(R.id.recycleImg)
 
         val edtName = dialogView.findViewById(R.id.updateName) as EditText
         val edtEmail = dialogView.findViewById(R.id.updateEmail) as EditText
-
+        img = dialogView.findViewById<ImageView>(R.id.imgSelect)
+        img?.setOnClickListener {
+            context.openGalleryForImages()
+        }
         dialogBuilder.setTitle("Update Record")
         dialogBuilder.setMessage("Enter data below")
         dialogBuilder.setPositiveButton("Update", DialogInterface.OnClickListener { _, _ ->
-
-            val updateId = id.toString()
-            val updateName = edtName.text.toString()
-            val updateEmail = edtEmail.text.toString()
-            //creating the instance of DatabaseHandler class
-            val databaseHandler: DatabaseHandler = DatabaseHandler(context)
-            if (updateName.trim() != "" && updateEmail.trim() != "") {
-                //calling the updateEmployee method of DatabaseHandler class to update record
-                val status = databaseHandler.updateEmployee(
-                    EmpModelClass(
-                        Integer.parseInt(updateId),
-                        updateName,
-                        updateEmail
-                    )
-                )
-
-                if (status > -1) {
-                    Toast.makeText(context, "record update", Toast.LENGTH_LONG).show()
-                    list[pos].userEmail = updateEmail
-                    list[pos].userName = updateName
-
-                }
-            } else {
-                Toast.makeText(context, "id or name or email cannot be blank", Toast.LENGTH_LONG)
-                    .show()
-            }
-
+            context.saveRecord(id.toString(),edtName.text.toString(),edtEmail.text.toString(),true)
+//
         })
         dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, which ->
             //pass
@@ -158,9 +159,8 @@ var recycle : RecyclerView = itemView.findViewById(R.id.recycleImg)
         val b = dialogBuilder.create()
         b.show()
 
-        notifyDataSetChanged()
-
     }
+
 
 
 }

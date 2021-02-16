@@ -20,4 +20,17 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="enter email"/>
+
+
+    <ImageView
+        android:id="@+id/imgSelect"
+        android:layout_width="105dp"
+        android:layout_height="105dp"
+        android:layout_gravity="center_horizontal"
+        android:onClick="UpdateImages"
+        android:scaleType="fitCenter"
+        android:src="@drawable/add_photo"
+        android:visibility="visible"
+        android:background="@drawable/layer"
+        />
 </LinearLayout>

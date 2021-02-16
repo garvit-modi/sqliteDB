@@ -71,7 +71,7 @@
             android:layout_height="105dp"
             android:layout_alignParentRight="true"
             android:layout_gravity="end"
-            android:onClick="BookComplaint"
+            android:onClick="AddImages"
             android:scaleType="fitCenter"
             android:src="@drawable/add_photo"
             android:visibility="visible"
@@ -82,21 +82,22 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="350sp"
-        android:layout_marginTop="20sp">
+        >
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listView"
             android:layout_width="wrap_content"
-            android:layout_height="350sp"/>
+            android:layout_height="350sp"
+            android:isScrollContainer="false"/>
     </androidx.core.widget.NestedScrollView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40sp"
         android:orientation="horizontal"
         android:layout_gravity="center"
         >
         <Button
+            android:id="@+id/saveRecord"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Save"
